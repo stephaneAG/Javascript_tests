@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+  <title>WebAudioAPI - Example 2</title>
+</head>
+    
+<style>
+</style>
+    
+<script>
+(function(theWindow, theDocument){
+  
+  // create an AudioContext
+  var context = new AudioContext();
+  
+  // create an AudioSource ( audio files / oscillators ( to generate sound from scratch )
+  oscillator = context.createOscillator(); // Create sound source
+  
+  // -- Intermediate Audio Nodes --
+  gainNode = context.createGain(); // Create gain node 
+  gainNode.gain.value = 0.3; // Set gain node to 30 percent volume
+  // ------------------------------
+  
+  // connect the AudioDestination
+  oscillator.connect(gainNode); // Connect sound to gain node 
+  gainNode.connect(context.destination); // Connect gain node to speakers
+  
+  // play the sound
+  oscillator.start(); // Generate sound instantly
+  
+  // stop the sound ( when desired )
+  // oscillator.stop();
+  setTimeout(function(){ oscillator.stop(); }, 3000);
+  
+  
+})(window, document);
+</script>
+
+<body>
+  <a href="http://madtoyslab.com/WebAudioContextTests">Back to WebAudioAPI tests</a>
+</body>
+    
+</html>

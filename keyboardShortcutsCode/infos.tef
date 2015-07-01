@@ -1,0 +1,23 @@
+# R: to implement quick shortcuts in a webpage or webapp ;p
+
+# import
+<script src="js/shortcut.js"></script> <!-- TEF EDIT: I need quick shortcuts available & don't have time to do that yet [ www.openjs.com/scripts/events/keyboard_shortcuts/ ] -->
+
+# code
+shortcut.add("Ctrl+S",function() { tefSaveEditorScriptAsFile(); }, { 'propagate':false }); // display a "save as" popup to save the content of the editor as a script
+//shortcut.add("Ctrl+R",function() { btnReload.click(); }, { 'propagate':false }); // Reload/Refresh/Re-render the 3d view ( aka "gProcessor.setJsCad(stuff)" ) 
+//shortcut.add("Ctrl+Shift+A",function() { btnReload.click(); }, { 'propagate':false }); // same as above, but not used by Ace.js, so byby headhache ;D
+//var editorInnerContent = theDocument.querySelector('.ace_scroller') // override cuz this is sooooo annoying ( I wanna RENDER , and I have Ctrl+F ANYWAY !! :/ )
+//shortcut.add("Ctrl+R",function() { btnReload.click(); }, { 'target': editorInnerContent, 'propagate':false });
+
+shortcut.add("Ctrl+Shift+F",function() { selectUi.selectedIndex = 0; selectUi.onchange(); }, { 'propagate':false }); // display full UI
+shortcut.add("Ctrl+Shift+D",function() { selectUi.selectedIndex = 1; selectUi.onchange(); }, { 'propagate':false }); // hide dropzone
+shortcut.add("Ctrl+Shift+P",function() { selectUi.selectedIndex = 2; selectUi.onchange(); }, { 'propagate':false }); // hide parameters ( if any )
+shortcut.add("Ctrl+Shift+C",function() { selectUi.selectedIndex = 3; selectUi.onchange(); }, { 'propagate':false });// hide both dropzone & parameters
+
+shortcut.add("Ctrl+Shift+E",function() { btnToggleEditor.click(); }, { 'propagate':false }); // toggle editor visibility
+
+shortcut.add("Ctrl+Shift+1",function() { selectResizeEditor.selectedIndex = 3; selectResizeEditor.onchange(); }, { 'propagate':false }); // resize editor to 100% of the screen
+shortcut.add("Ctrl+Shift+2",function() { selectResizeEditor.selectedIndex = 2; selectResizeEditor.onchange(); }, { 'propagate':false }); // resize editor to 50% of the screen
+shortcut.add("Ctrl+Shift+3",function() { selectResizeEditor.selectedIndex = 0; selectResizeEditor.onchange(); }, { 'propagate':false }); // resize editor to 33% of the screen
+    

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+  <title>WebAudioAPI - Example 2</title>
+</head>
+    
+<style>
+</style>
+    
+<script>
+(function(theWindow, theDocument){
+  
+  
+  /*
+  The WebAUdioAPI allows to generate oscillating wave forms quite easily
+  These are the actual building blocks of a synthesizer
+  
+  An oscillator is a circuit that produces a repetitite, oscillating signal
+  
+  Along with audio filters & audio controllers, these are one of the basic elements
+  required for modern analog substractive synthesizers
+  
+  
+  The Oscillator Node is the interface representing an audio source
+  generating a periodic waveform
+  
+  An oscillator defaults to a sine wave at 200 Hz
+  
+  We must connect the oscillator to a destination in order to hear it
+  
+  Some commonly used waveforms are:
+  - "sine"       => Sine
+  - "square"     => Square
+  - "saw"        => Sawtooth
+  - "triangle"   => Triangle
+  - "custom"     => Custom
+  
+  We can also adjust the pitch of the wave simply by setting a frequency in Hz
+  ( ex: a value of 440 'd be an A ( A4 = 440Hz ) )
+  
+  ## EX: EXAMPLE 1 ##
+  
+  
+  We can also layer multiple oscillators to create a thicker sound
+  
+  For a dual oscillator, we create 2 sources:
+  - oscillator 1 is set to the default type & freq, & played instantly
+  - oscillator 2 is set to a square wave at half the freq of oscillator 1
+    ( this 'll produce a tone that's one octave below the tone of oscillator 1 ),
+    & is played after 2 seconds after being routed to a gain node reducing it's vol to 30%
+  
+  
+  */
+  
+  // create an AudioContext
+  var context = new AudioContext();
+  
+  // create an AudioSource ( audio files / oscillators ( to generate sound from scratch )
+  oscillator = context.createOscillator(); // Create sound source 1
+  oscillator2 = context.createOscillator(); // Create sound source 2
+  
+  // specify oscillator settings
+  oscillator.type = "square"; // Square wave
+  oscillator.frequency.value = 440; // freq in Hz
+  
+  // specify oscillator 2 settings
+  oscillator2.type = "saw"; // Sawtooth wave
+  oscillator2.frequency.value = 220; // freq in Hz
+  
+  // -- Intermediate Audio Nodes --
+  gainNode = context.createGain(); // Create gain node 
+  gainNode.gain.value = 0.3; // Set gain node to 30 percent volume
+  
+  gainNode2 = context.createGain(); // Create gain node
+  gainNode2.gain.value = 0.2;
+  // ------------------------------
+  
+  // connect the AudioDestination
+  oscillator.connect(gainNode); // Connect sound source 1 to gain node 
+  gainNode.connect(context.destination); // Connect gain node to speakers
+  
+  oscillator2.connect(gainNode2); // Connect sound source 2 to gain node 2
+  gainNode2.connect(context.destination); // Connect gain node 2 to speakers
+  
+  // play the sound
+  oscillator.start(); // Generate & play sound instantly
+  oscillator2.start(2); // Generate & play sound after 2 seconds 
+  
+  // stop the sound ( when desired )
+  // oscillator.stop();
+  setTimeout(function(){ oscillator.stop(); }, 3000);
+  setTimeout(function(){ oscillator2.stop(); }, 5000);
+  
+})(window, document);
+</script>
+
+<body>
+  <a href="http://madtoyslab.com/WebAudioContextTests">Back to WebAudioAPI tests</a>
+</body>
+    
+</html>

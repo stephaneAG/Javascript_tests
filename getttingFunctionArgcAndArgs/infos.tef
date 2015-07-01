@@ -1,0 +1,9 @@
+# the following code is a simple example on how to get argc & args from a function
+var myFunc = function(){
+  console.log( 'argc: ' + arguments.length ); // log argc
+  for( i=0; i<arguments.length; i++ ) console.log( 'args[' + i + '] =>' + arguments[i] );
+}
+
+# then, we can call it with or without args & have a useful log on these if any
+myFunc(); // argc: 0
+myFunc(3, 'lol'); // argc: 2, args[0] =>3, args[1] =>lol

@@ -1,0 +1,54 @@
+<html>
+
+<head>
+  <title> JS framework in modules </title>
+</head>
+
+<script type="text/javascript">
+	
+	(function(theWindow, theDocument, theUndefined){
+		
+		/* ************************************************************************************************************************************************ */
+		// our actual code ..
+		
+		// toggle the Espruino on-board LED on/off
+		var next_state = 1;
+		theDocument.querySelector('#led-toggle-btn').addEventListener('click', function(){
+		  audio_serial_write( 'digitalWrite(LED1, ' + next_state + ');\n' ); // toggle
+		  next_state = !next_state; // switch state
+		});
+		
+		/* ************************************************************************************************************************************************ */
+		
+		// backup the original console.log
+		var consoleLog = theWIndow.console.log;
+		
+		// define the consoe.lgo replacement
+		function theConsoleLog( message ){
+			alert('LOG: ' + message );
+		}
+		
+		// override the console log to use alerts instead
+		theWindow.console.log = theConsoleLog;
+		
+		// test it ;p
+		console.log( 'I am a log that should display as an alert :) !' );
+		
+		// make available stuff outside of the 'Self Executing Anonymous Function' closure ..
+		theWindow.consoleLog = theConsoleLog; // same as above (..)
+		
+	})(window, document);
+	
+</script>
+
+<body>
+  <div id="main-wrapper">
+		
+    <button id="led-toggle-btn">Toggle Espruino on-board LED</button>
+		
+  </div>
+</body>
+
+<script src="./js/serial_to_audio.js"></script>
+
+</html>

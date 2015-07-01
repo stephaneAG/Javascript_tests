@@ -1,0 +1,23 @@
+# R: the following are quick notes on some helpful ways to debug javascript
+
+# Console API
+# console.log( Object/String ) or console.log( "%o", theObj ) => display a string, js obj or DOM elem
+# console.assert( expression, object ) => logs the 2nd argument ( Object ) if the 1st ( expression ) evaluates to false
+#   ex: var stg = document.getElementsByTagName('body')[0].textContent;
+#       console.assert( z.length > 0, "blank body" );
+
+# console.count( label ) => displays the count each time this m€thod is executed in the script ( can be used to see how many tim€s a fcn has been called )
+#   ex: function computeSomething( ){ console.count("Computed Something"); }
+
+# console.time( label ), console.timeEnd( label )
+#   ex: function evalSomething( ){ console.time( "Evaluation"); /* some evaluation logic */ console.timeEnd("Evaluation"); }
+
+# console.trace( Object ) => displays the stack trace from where this mthd is called with a link path to that line in the script ( only some browsers allow passings object as a param to it )
+#   ex: function someLogic( ){ console.trace( ); }
+
+# console.group( Object/string ), console.groupEnd() => can be used in combination to group the logs in the console wich can be seen formatted by indentation to specify the group under wich it comes
+#   ex: console.group( "some task of level 1 started");
+#       console.group("some group sub task of  level 1 started");
+#       console.groupEnd( );
+#       console.groupEnd( );
+

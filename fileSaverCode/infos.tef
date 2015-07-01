@@ -1,0 +1,18 @@
+# R: the following is a reminder on how to use "FileSaver.js" to display a "Save as" dialog for the user to save the desired content
+
+# import
+<script src="js/filesaver.js"></script> <!-- TEF EDIT: I need quick client file saving capabitily & don't have time to do that yet [ github eligrey FileSaver.js ] -->
+
+# code
+var tefSaveEditorScriptAsFile = function(){
+    // get the code displayed in the editor ( pane normally on the right side of the screen )
+    var cadCode = editor.getValue();
+    // get the filename of the file to diplsay it in the "save as" popup
+    var fileName = "<?= strval(str_replace("\0", "", )) ?>";
+    // display a "save as" popup
+    //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    //saveAs(blob, "hello world.txt"); // TODO: use the filenamehere
+    var blob = new Blob([ cadCode ], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, fileName); // TODO: use the filenamehere
+    
+};

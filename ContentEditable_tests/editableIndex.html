@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+    
+      <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script> <!-- google-code-prettify [REMOTE] -->
+      
+      <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+      <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
+      
+      
+      <link href="css/codestyle.css" type="text/css" rel="stylesheet" /> <!-- adapted styleshett for prettifying the <style> & <script> tags -->
+      
+       <style>
+            /* -- the following CSS is necessary for enabling some in-page editing capacities -- */
+            script[contenteditable] , style[contenteditable] { display: block; }/* display the <script> & <style> tags wich are editable */
+            script, style { font-family: monospace; white-space: pre; } /* code-like ( further step -> google-code-prettify, already used for BrainApp if I recall correctly ) */
+            head, title { display: block; } /* display the title within the page to make it editable ( we also have to display the head, invisible otherwise ) */
+        </style>
+       
+        <style contenteditable class="prettyprint lang-css">
+            /* -- the following style is content-editable, aka modifying it 'll realtime update the page's style -- */
+        </style>
+          
+        <script id="editable-script" contenteditable class="prettyprint lang-js">
+            /* -- the following script is content-editable, aka modifying it 'll update the page's js after some inactivity time from the user ( or shortcut call ) -- */
+            alert('hello there!');
+        </script>
+            
+    </head>
+    
+    <body contenteditable onload="prettyPrint()">
+        
+        <h1> true !</h1>
+        
+    </body>
+    
+    <script type="text/javascript" src="js/main.js"></script> <!-- the "main" javascript code -->
+    
+</html>

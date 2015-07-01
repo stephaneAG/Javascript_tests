@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+</head>
+        
+<style>    
+</style>
+
+<script>
+    (function(theWindow, theDocument){
+        
+        /*
+        *     -- initiate the AudioContext if the WebAudio API is supported --
+        *
+        */
+        var context;
+        theWindow.addEventListener('load', init, false); // R: won't work for Brackets
+        var init = function(){
+            try {
+                // shim for prefixing
+                theWindow.AudioContext = theWindow.AudioContext ||
+                                         theWindow.webkitAudioContext;
+                context = new AudioContext();
+                console.log('Web Audio API supported ! => AudioContext initiated.');
+            } catch(e) {
+                alert('Web Audio API not supported !');
+            }
+        };
+        //init(); // to test with Brackets
+        
+        
+        
+        /*
+        *     -- loading sounds --
+        *
+        */
+        var dogBarkingbuffer = null;
+        var loadDogSound = function(url){
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.responseType = 'arraybuffer';
+            // decode asynchronously
+            request.onload = function(){
+                context.decodeAudioData(request.response, function(buffer){
+                    dogBarkingbuffer = buffer;
+                }, onError);
+            }
+            request.send();
+        };
+        
+        
+        
+        /*
+        *     -- playing sounds --
+        *
+        */
+        var playSound = function(buffer){
+            // create a sound source
+            var source = context.createBufferSource();
+            // tell the source wich sound to play
+            source.buffer = buffer;
+            // connect the source to the context's destination ( the speakers )
+            source.connect(context.destination);
+            // play the sound now ( from its beginning )
+            source.start(0);
+        };
+        
+        
+        
+        
+        
+        /* ---- more efficient way of loading sounds ---- */
+        
+        /*
+        *     -- class BufferLoader -- START --
+        *
+        */
+        function BufferLoader(context, urlList, callback){
+            this.context = context;
+            this.urlList = urlList;
+            this.onload = callback;
+            this.bufferList = new Array();
+            this.loadCount = 0;
+        }
+        BufferLoader.prototype.loadBuffer = function(url, index){
+            // load buffer asynchronously
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.responseType = 'arraybuffer';
+            var loader = this;
+            request.onload = function(){
+                // asynchronously decode audio file data present in request.response
+                loader.context.decodeAudioData(
+                    request.response, 
+                    function(buffer){
+                    if(!buffer){
+                        alert('error decoding file data: ' + url);
+                        return;
+                    }
+                    loader.bufferList[index] = buffer;
+                    if(++loader.loadCount == loader.urlList.length)
+                        loader.onload(loader.bufferList);
+                    },
+                    function(error){
+                        console.error('decodeAudioData error', error);
+                    }
+                );
+            }
+            request.onerror = function(){
+                alert('BufferLoader: XHR error');
+            }
+            request.send();
+        }
+        BufferLoader.prototype.load = function(){
+            for(var i = 0; i < this.urlList.length; ++i)
+                this.loadBuffer(this.urlList[i], i);
+        }
+        /*
+        *     -- class BufferLoader -- END --
+        */
+        
+        
+        /*
+        *     -- using the BufferLoader class --
+        *
+        */
+        window.load = init;
+        var context;
+        var bufferLoader;
+        var init = function(){
+            // shim for prefixing
+            theWindow.AudioContext = theWindow.AudioContext ||
+                                     theWindow.webkitAudioContext;
+            context = new AudioContext();
+            bufferLoader = new BufferLoader(
+                context,
+                [
+                    '../sounds/stuff/1.wav',
+                    '../sounds/stuff/2.wav',
+                ],
+                finishedLoading
+            );
+            bufferLoader.load();
+        };
+                    
+        // callback function once loading is finished for all audio data files
+        var finishedLoading = function(bufferList){
+            // create 2 sources & play them both together
+            var source1 = context.createBufferSource();
+            var source2 = context.createBufferSource();
+            source1.buffer = bufferList[0];
+            source2.buffer = bufferList[1];
+            source1.connect(context.destination);    
+            source2.connect(context.destination);
+            source1.start(0);
+            source1.start(0);
+        };
+        
+        
+    })(window, document);
+    </script>
+
+<body>
+  <a href="http://madtoyslab.com/WebAudioContextTests/example1">Example 1</a>
+  <a href="http://madtoyslab.com/WebAudioContextTests/example2">Example 2</a>
+  <a href="http://madtoyslab.com/WebAudioContextTests/oscillatorExample1">Oscillator Example 1</a>
+  <a href="http://madtoyslab.com/WebAudioContextTests/oscillatorExample2">Oscillator Example 2</a>
+  <a href="http://madtoyslab.com/WebAudioContextTests/exampleiOS1">Example 1 iOS</a>
+  <a href="http://madtoyslab.com/WebAudioContextTests/exampleApple">Apple example</a>
+  <a href="http://madtoyslab.com/WebAudioContextTests/exampleAppleMod">Apple example Mod</a>
+</body>
+    
+</html>

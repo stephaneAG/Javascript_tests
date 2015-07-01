@@ -1,0 +1,183 @@
+# R: the following cod is a reminder of how to have a simple & clean pure CSS loading animation
+
+# == CSS == #
+<!-- adding a "loader" landing page tu make user wait until everything is handled behind the curtain .. -->
+<style>
+
+div#page_loader {
+  position: absolute;
+  top: 0;
+  bottom: 0%;
+  left: 0;
+  right: 0%;
+  background-color: white;
+  z-index: 99;
+  -webkit-transition: all 1s;
+}
+
+div#intro_message { 
+  width: 500px; /*300px;*/
+  height: 300px;
+  position: absolute;
+  left: 50%;
+  top: 50%; 
+  margin-left: -250px; /*-150px;*/
+  margin-top: -200px; /* -150px; */
+  text-align: center;
+  font-size: 22pt;
+  color: gray;
+}
+div#intro_message p.username { font-weight: large; color: blue; }
+div#intro_message p.fileobjname { font-weight: large; color: blue; }
+    
+#overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #000;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+#loading {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
+    //-webkit-animation: rotate 2.0s infinite linear;
+    //animation: rotate 2.0s infinite linear;
+}
+
+
+
+
+
+
+
+.spinner {
+  margin: 100px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  text-align: center;
+  
+  -webkit-animation: rotate 2.0s infinite linear;
+  animation: rotate 2.0s infinite linear;
+}
+
+.dot1, .dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #333;
+  border-radius: 100%;
+  
+  -webkit-animation: bounce 2.0s infinite ease-in-out;
+  animation: bounce 2.0s infinite ease-in-out;
+}
+
+.dot2 {
+  top: auto;
+  bottom: 0px;
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes rotate { 100% { -webkit-transform: rotate(360deg) }}
+@keyframes rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}    
+</style>
+
+
+
+# == HTML == #
+<!-- animated loader -->
+<div id="page_loader">
+  <div id="intro_message">
+      <span> Connected as <p class="username"> <?= $dekryptedUserLogin ?> </p>
+      </span> Loading <p class="fileobjname"> <?= $dekryptedCadFileName ?> </p> </div>
+  <div id="loading">
+    <div class="spinner">
+      <div class="dot1"></div>
+      <div class="dot2"></div>
+    </div>
+  </div>
+</div>
+
+
+
+
+# == JS == #
+<script>
+    
+    /*
+    *    Loader Animation & Overlay
+    *
+    */
+    (function(){
+        
+        /* -- animated loader -- */
+        /*
+        var loading = function() {
+            // add the overlay with loading image to the page
+            var over = '<div id="page_loader">' +
+                         '<div id="loading">' +
+                           '<div class="spinner">' +
+                             '<div class="dot1"></div>' +
+                             '<div class="dot2"></div>' +
+                           '</div>' +
+                         '</div>' +
+                       '</div>';
+            
+            document.getElementsByTagName('body')[0].innerHTML += over;
+        };
+        loading();
+        */
+    })();
+    
+        
+    
+        /* -- cad script parsing from server data -- */
+        setTimeout(function(){
+            //alert('PHP JS LOADED !');
+            // get the cadscript gotten from PHP
+            var cadScript = document.getElementById('cadscript').innerText;  
+            // set the new content of the editor
+            editor.getSession().setValue( cadScript );
+            // parse the cad script
+            gProcessor.setJsCad(editor.getSession().getValue() );
+            // dismiss the loader by transitionning its opacity to 0 & removing it from the document
+            setTimeout(function(){
+                var loaderOverlay = document.getElementById('page_loader'); // R: add the transitionend event handler in js to remove it from the doc
+                loaderOverlay.addEventListener("webkitTransitionEnd", function(){ loaderOverlay.parentNode.removeChild( loaderOverlay ); }, true);
+                loaderOverlay.style.opacity = 0; // 'll be transitionned via CSS code ( for webkit at least )
+            }, 2000);
+            //loaderOverlay.parentNode.removeChild( loaderOverlay ); // hacky, but should work ! ;D
+        }, 3000); // until I come up with an accurate fcn that is called when EVERYTHING is loaded ( .. )
+    
+    
+    
+
+    
+    
+    
+</script>

@@ -1,0 +1,2 @@
+# R: to have it working, all we need is a simple HTTP server:
+python -m SimpleHTTPServer 8989

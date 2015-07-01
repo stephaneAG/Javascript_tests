@@ -1,0 +1,24 @@
+# R: the following code is an example of how to override the window.console.log() function
+
+# define
+function overrideLogs( logFcn ){
+  // original console 'll still be acessible with "originalConsole.log(stg)"
+  if(window.console){
+		//console.log('and this is the last message you see printed in that console..');
+	  var window.originalConsole = window.console; // reference to window.console for further experiments ;p
+			
+		window.console = { // modify window.console DIRECTLY
+			log: function(msg){
+				logFcn(msg);
+				originalConsole.log('ExtConsole.overwriteWindowConsole > logFcn >> msg: ' + msg);
+			}
+		};
+					
+	}
+}
+
+# use
+function customLog( logMsg ){ alert('bullshit ?'); }
+
+overrideLogs( customLog );
+customLog('<the_log_message>');

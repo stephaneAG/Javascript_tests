@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="gallery.css" type="text/css">
+
+</head>
+
+<body>
+
+<!-- the gallery images -->
+<div class="images-container">
+    <img src="./kitties/kitty1.jpg" class="current" />
+    <img src="./kitties/kitty2.jpg" />
+    <img src="./kitties/kitty3.jpg" />
+    <img src="./kitties/kitty4.jpg" />
+    <img src="./kitties/kitty5.jpg" />
+    <img src="./kitties/kitty6.jpg" />
+    <img src="./kitties/kitty7.jpg" />
+    <img src="./kitties/kitty8.jpg" />
+    <img src="./kitties/kitty9.jpg" />
+    <img src="./kitties/kitty10.jpg" />
+</div>
+
+<!-- in-view gallery -->
+<div class="inview-gallery gallery">
+    <div class="visual-container"></div>
+    <div class="controls">
+        <button class="prev-button">Previous</button>
+        <button class="next-button">Next</button>
+        <p class="index-and-total"> index / total </p>
+        <button class="enlarge-button">Enlarge</button>
+    </div>
+</div>
+
+<!-- popup gallery -->
+<div class="popup-gallery gallery">
+    <div class="visual-container"></div>
+    <div class="controls">
+        <button class="prev-button">Previous</button>
+        <button class="next-button">Next</button>
+        <p class="index-and-total"> index / total </p>
+        <button class="dismiss-button">Dismiss</button>
+    </div>
+</div>
+
+<script src="gallery.js"></script>
+
+</body>
+
+</html>

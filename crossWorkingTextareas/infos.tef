@@ -1,0 +1,27 @@
+# R: the following is somehow a cross-linked textareas ;p
+#    it could be useful ,for example, when modifying a file in multiple windows/tabs/panes ;D
+
+# add txtareas to the document
+document.body.innerHTML += '' +
+'<textarea id="area1">number one</textarea> ' +
+'<textarea id="area2">number two</textarea>';
+
+# get references to our txtareas
+var txtarea1 = document.querySelector('#area1'), txtarea2 = document.querySelector('#area2');
+
+# cross link typing in them
+txtarea1.onkeydown = function(){
+ txtarea2.value = txtarea1.value;
+};
+txtarea1.onkeyup = function(){
+ txtarea2.value = txtarea1.value;
+};
+
+txtarea2.onkeydown = function(){
+ txtarea1.value = txtarea2.value;
+};
+txtarea2.onkeyup = function(){
+ txtarea1.value = txtarea2.value;
+};
+
+# .. and that's all ;D

@@ -1,0 +1,53 @@
+/* -- layout & logic -- */
+
+/* invisible images container */
+div.images-container { display: none; }
+/* in-view gallery */
+div.inview-gallery { /* border: 1px dashed black; */ }
+/* popup gallery */
+div.popup-gallery { /* border: 1px dashed gray; */ }
+/* common */
+div.gallery { margin: 10px; }
+div.visual-container { /* border: 1px dashed blue; */ height: 200px; width: 650px; margin: 0 auto }
+
+
+/* -- popup specific layout --*/
+div.popup-gallery {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -325px;
+  z-index: 11;
+
+  /* not displayed by default */
+  //display: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* -- popup gallery overlay -- */
+div.popup-gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.9); /*dim the background*/
+  
+  /* not displayed by default */
+  //display: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* -- transitions & animations -- */
+div.visual-container { -webkit-transition: background-image .8s ease-in-out; }
+
+div.popup-gallery, div.popup-gallery-overlay {
+  /* -webkit-transition: visibility .8s ease-in-out, opacity 0.8s ease-in-out; */
+  /*-webkit-transition: visibility .8s ease-in-out 0s, opacity 0.8s ease-in-out; */
+  -webkit-transition: visibility 0.8s ease-in-out;
+  -webkit-transition: opacity 0.8s ease-in-out;
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>HTML boilerplate</title>
+        <meta name="description" content="neatFramework HTML boilerplate.">
+        
+        <link rel="stylesheet" href="css/test.css">
+        <script type="text/javascript" src="js/test.js"></script>
+        <!-- Graphs using Rcikshaw -->
+        <link rel="stylesheet" href="css/graph.css">
+        <link rel="stylesheet" href="css/detail.css">
+        <link rel="stylesheet" href="css/legend.css">
+        <script src="js/vendor/d3.min.js"></script> 
+        <script src="js/vendor/d3.layout.min.js"></script> 
+        <script src="js/rickshaw.min.js"></script>
+        <style>
+          #chart_container {
+            position: relative;
+            display: inline-block;
+            font-family: Arial, Helvetica, sans-serif;
+          }
+          #chart {
+            display: inline-block; /* position: relative; */
+            margin-left: 40px; /* left: 40px; */
+          }
+          #y_axis {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+          }
+          #legend {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 0 0 10px;
+          }
+        </style>        
+
+    </head>
+    <body>
+      <!-- <div id="chart"></div> -->
+      
+      <div id="chart_container">
+        <div id="y_axis"></div>
+        <div id="chart"></div>
+      </div>
+      <div id="legend"></div>
+      
+      
+      <!-- 
+      <script type="text/javascript">
+        var graph = new Rickshaw.Graph( {
+          element: document.querySelector("#chart"), 
+          width: 500, 
+          height: 200, 
+          series: [{
+              color: 'steelblue',
+              data: [ 
+                  { x: 0, y: 40 }, 
+                  { x: 1, y: 49 }, 
+                  { x: 2, y: 38 }, 
+                  { x: 3, y: 30 }, 
+                  { x: 4, y: 32 } ]
+          }]
+        });
+ 
+        graph.render();
+
+      </script>
+      -->
+      
+      <script type="text/javascript">
+        
+        var tv = 250;
+
+        // instantiate our graph!
+        var graph = new Rickshaw.Graph( {
+        	element: document.getElementById("chart"),
+        	width: 750,
+        	height: 650,
+        	renderer: 'line', //'scatterplot',
+        	/* series: new Rickshaw.Series.FixedDuration([{ name: 'one' }], undefined, { */
+            series: new Rickshaw.Series.FixedDuration(
+              [
+                { name: 'one' }, 
+                { name: 'two' },
+                { name: 'three' },
+                { name: 'four' },
+                { name: 'five' },
+                { name: 'six' },
+                { name: 'seven' },
+                { name: 'height' },
+                { name: 'nine' },
+                { name: 'ten' },
+                { name: 'eleven' },
+                { name: 'twelve' },
+                { name: 'thirtenn' },
+                { name: 'fourteen' } 
+              ], 
+              undefined, {
+                timeInterval: tv,
+                maxDataPoints: 100,
+                timeBase: new Date().getTime() / 1000
+        	  }) 
+        });
+        
+        var axes = new Rickshaw.Graph.Axis.Time( { graph: graph } ); // display X-axis
+        
+        var y_axis = new Rickshaw.Graph.Axis.Y( { // display Y-axis
+          graph: graph,
+          orientation: 'left',
+          tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+          element: document.getElementById('y_axis'),
+        });
+        
+        var hoverDetail = new Rickshaw.Graph.HoverDetail( { // show series values & formatted date é time on hover
+          graph: graph
+        });
+        
+        var legend = new Rickshaw.Graph.Legend( { // display a legend ?
+          element: document.querySelector('#legend'),
+          graph: graph
+        });
+
+        graph.render();
+        
+        // add some data every so often
+        
+        var i = 0;
+        var iv = setInterval( function() {
+          var data = { one: Math.floor(Math.random() * 40) + 120 };
+          var randInt = Math.floor(Math.random()*100);
+          data.two = (Math.sin(i++ / 40) + 4) * (randInt + 400);
+          data.three = randInt + 300;
+          data.four = randInt + 400; // tef add
+          data.five = randInt + 500; // tef add
+          data.six = randInt + 600; // tef add
+          data.seven = randInt + 700; // tef add
+          data.height = randInt + 800; // tef add
+          data.nine = randInt + 900; // tef add
+          data.ten = randInt + 1000; // tef add
+          data.eleven = randInt + 1100; // tef add
+          data.twelve = randInt + 1200; // tef add
+          data.thirteen = randInt + 1300; // tef add
+          data.fourteen = randInt + 1400; // tef add
+          
+          
+          graph.series.addData(data);
+          graph.render();
+        }, tv );
+
+      </script>
+      
+    </body>
+</html>
+<!--
+
+    [[[[[[[[[[[[[[[     ]]]]]]]]]]]]]]]
+    [::::::::::::::     ::::::::::::::]
+    [::::::::::::::     ::::::::::::::]
+    [::::::[[[[[[[:     :]]]]]]]::::::]
+    [:::::[                     ]:::::]
+    [:::::[                     ]:::::]
+    [:::::[                     ]:::::]
+    [:::::[                     ]:::::]
+    [:::::[    neatFramework    ]:::::]
+    [:::::[ coded with Brackets ]:::::]
+    [:::::[                     ]:::::]
+    [:::::[                     ]:::::]
+    [:::::[                     ]:::::]
+    [:::::[                     ]:::::]
+    [::::::[[[[[[[:     :]]]]]]]::::::]
+    [::::::::::::::     ::::::::::::::]
+    [::::::::::::::     ::::::::::::::]
+    [[[[[[[[[[[[[[[     ]]]]]]]]]]]]]]]
+
+-->

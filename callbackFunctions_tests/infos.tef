@@ -1,0 +1,5 @@
+# URL to access the test page in the browser bar:
+http://localhost/callbackFunctions_tests/html_skeleton.html
+
+# R: to copy file(s) / dir(s) used for test(s), the following command can be pretty handy ;p
+sudo cp -r ./../callbackFunctions_tests /var/www

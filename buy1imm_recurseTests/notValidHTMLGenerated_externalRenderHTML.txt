@@ -1,0 +1,47 @@
+<div class="partner">
+  <pre> tef </pre>
+  <div class="sponsored visible">
+    <div class="partner">
+      <pre> tefou </pre>
+      <div class="sponsored visible">
+        
+        <div class="partner">
+          <pre> louis </pre>
+        </div><!-- end of partner n2 -->
+          
+        <div class="partner">
+          <pre> andre </pre>
+        </div><!-- end of partner n2 -->
+      </div><!-- end of sponsored n1 -->
+    </div><!-- end of partner n1 -->
+
+    <div class="partner">
+      <pre> lemin </pre>
+      <div class="sponsored visible">
+        
+        <div class="partner">
+          <pre> luke </pre>
+        </div><!-- end of partner n2 -->
+
+        <div class="partner">
+          <pre> mark </pre>
+        <div class="sponsored visible">
+
+          <div class="partner">
+            <pre> lea </pre>
+            <div class="sponsored visible">
+            
+              <div class="partner">
+                <pre> heigh </pre>
+              </div><!-- end of partner n2 -->
+            
+              <div class="partner">
+                <pre> alombro </pre>
+              </div><!-- end of partner n2 -->
+            
+            </div><!-- end of sponsored n1 -->
+          </div><!-- end of partner n1 -->
+
+          <div class="partner">
+            <pre> clea </pre>
+          </div><!-- end of partner n2 -->

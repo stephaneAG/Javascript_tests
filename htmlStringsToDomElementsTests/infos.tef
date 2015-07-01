@@ -1,0 +1,24 @@
+# the following are diverse ways of getting the content of strings interpreted as xml/html stuff
+
+# Ex: 1 => get DOM element(s) out of an xml string
+var xmlString = '<div> a div <p> a paragraph </p> </div>'; // create an xml string ( aka some string with html/html-like tags in it )
+var parser = new DOMParser(); // create an instance of a DOM parser
+var xmlDoc = parser.parseFromString( xmlString, 'text/xml' ); // parse the content of the string to get DOM elements out of it in a "#document" object
+console.log( xmlDoc ); // log the xml document
+console.log( xmlDoc.firstChild ); // 'll log the div & its content
+console.log( xmlDoc.firstChild.firstChild ); // 'll log only the text content of the div
+console.log( xmlDoc.firstChild.firstElementChild ); // 'll log the p & its content
+console.log( xmlDoc.firstChild.firstElementChild.firstChild ); // 'll log only the text content of the p
+console.log( xmlDoc.firstChild.textContent ); // 'll log all the xml document text content ( aka stripped from any tag(s) present )
+
+
+# Ex:2 => same as the above, but using a temporary wrapper ( aka, a div )
+var xmlString = '<div> a div <p> a paragraph </p> </div>'; // create an xml string ( aka some string with html/html-like tags in it )
+var wrapper = document.createElement('div'); // create the div that 'll serve as wrapper
+wrapper.innerHTML = xmlString; // set our xml string as the div's content
+var div = wrapper.firstChild; // get the DOM elements & content contained by the wrapper
+console.log( div ); // 'll log the div & its content
+console.log( div.firstChild ); // 'll log only the text content of the div
+// ..
+
+
