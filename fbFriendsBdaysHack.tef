@@ -1,0 +1,140 @@
+# facebook hack ?
+
+# R: we need to scroll / simulate scrolling for all the friends to appear ( resulting from successive calls to some fcn whose name I currently don't not know .. yet ? )
+#    anyway, digg how to use webscraping tools ( ghosty js friends ;p ) to issue requests to each of the /about link for each friend
+# goal of the hack ? getting all my fb friends's bdays without using their damn API & stuff .. as well as being able to use whatever format I want to store these bdays ( .. ) 
+
+# allFriends= document.querySelectorAll('[data-hovercard]')
+# better:
+# allFriends= document.querySelectorAll('li._698')
+# [].forEach.call(allFriends, function(div) {
+#   console.log(div.href);
+# });
+#
+# missing some elements
+[].forEach.call(friendsLis, function(div) {
+  var friendLink = div.querySelector('div.fsl.fwb.fcb');
+  console.log(friendLink.textContent);
+  console.log(friendLink.children[0].href);
+  var friendImgUrl = div.querySelector('img._s0._rv.img');
+  console.log('Image: ' + friendImgUrl.src);
+});
+# still missing some elements
+for (i = 0; i < friendsLis.length; ++i) {
+  var friendLink = friendsLis[i].querySelector('div.fsl.fwb.fcb');
+  console.log(friendLink.textContent);
+  console.log(friendLink.children[0].href);
+  var friendImgUrl = friendsLis[i].querySelector('img._s0._rv.img');
+  console.log('Image: ' + friendImgUrl.src);
+}
+
+# store stuff instead of making the debug console go ouch
+# R: scroll down first to get all the friends ( damn lazy loading .. )
+var friendsArr = [];
+
+// getting all the friends Uls - I've seen some familiar names => it seems to work
+var friendsUls = document.querySelectorAll('ul[data-pnref="friends"]');
+for (u = 0; u < friendsUls.length; ++u) {
+  ulFriends = friendsUls[u].querySelectorAll('li._698')
+  for (i = 0; i < ulFriends.length; ++i) {
+    var friendLink = ulFriends[i].querySelector('div.fsl.fwb.fcb');
+    var friendName = friendLink.textContent;
+    var friendUrl = friendLink.children[0].href;
+    var friendAboutUrl = friendUrl.substr( 0, friendUrl.indexOf('?') ) + '/about';
+    console.log('---- FRIEND START ----');
+    console.log('NAME: ' + friendName);
+    console.log('URL: ' + friendUrl);
+    console.log('ABOUT: ' + friendAboutUrl);
+    //var friendImg = friendsLis[i].querySelector('img._s0._rv.img');
+    var friendImg = ulFriends[i].querySelector('img._s0._rv.img');
+    console.log('IMAGE: ' + 'Image Url: ' + friendImg.src);
+    console.log('----- FRIEND END -----');
+    // add to our friend array
+    friendsArr.push( { name: friendLink.textContent, link: friendUrl, about: friendAboutUrl, img: friendImg.src } );
+  }
+}
+
+// getting the number of friends saved ( here 302 out of 305 -> nearly all, and actually don't know why 3 are missing ? )
+friendsArr.length
+
+// generating a page from that ( html + base64encode + data:text/html uri ;P )
+var style="html { padding: 0; margin: 0; border: none; display: block; } "
+style+="div.friend { height: 100px; border: 1px solid grey; margin-top: 5px; margin-bottom: 10px; min-width: 800px; } "
+style+="div.friend-infos { float: left; margin-left: 15px; } "
+style+="div.friend-photo { float: left; } "
+style+="img.friend-pic { width: 100px; } "
+style+="p.friend-name { color: blue; } "
+style+="a.friend-url { display: block; color: #00DBFF; } "
+style+="a.friend-about { display: block; color: #BADA55; }"
+
+var htmlHeader="<html> <head> <style> " + style + " </style> </head> <body>"
+var htmlBodyStart="<div class='friends'>";
+var htmlBodyEnd="</div>";
+var htmlFooter="</body> </html>"
+
+for (f = 0; f < friendsArr.length; ++f) {
+  var img = "<img class='friend-pic' src='" + friendsArr[f].img + "' >";
+  var name = "<p class='friend-name' >" + friendsArr[f].name + "</p>";
+  var urlLink = "<a class='friend-url' >" + friendsArr[f].link + "</a>";
+  // TODO: fetch the f*****g b.day from that damn about page using xhr !
+  var aboutLink = "<a class='friend-about' >" + friendsArr[f].about + "</a>";
+  //htmlBodyStart += "<div class='friend'>" + img + name + urlLink + aboutLink + "</div>";
+  htmlBodyStart += "<div class='friend'>" + "<div class='friend-photo'>" + img + "</div>" + "<div class='friend-infos'>" + name + urlLink + aboutLink + "</div>" + "</div>";
+}
+
+// build the page
+var friendsPage = htmlHeader + htmlBodyStart + htmlBodyEnd + htmlFooter;
+
+// encode it ( UTF8 ? base64 ? ) & generate a data:text/html uri
+//var dataURI = 'data:text/html,' + encodeURIComponent(friendsPage);
+var dataURI = 'data:text/html;charset=utf-8,' + encodeURIComponent(friendsPage);
+
+// open a new tab pointing to that url - window.open() returns null => gotta find a quick workaround ..
+//window.open('data:text/html;charset=utf-8,' + encodeURIComponent(friendsPage), '_blank' );
+window.location = dataURI; // WORKS FINE
+
+
+# to fetch the birthday on the about page of a profile
+var infoElems = document.querySelectorAll('span._c24._50f3')
+var bdayStuff = infoElems[infoElems.length -1].children[1].innerHTML;
+
+
+# to xhr our way to the about page
+//var script =  document.createElement("SCRIPT")
+var teframe = document.createElement("IFRAME");
+document.body.appendChild( teframe );
+var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() { if (xhttp.readyState == 4 && xhttp.status == 200) { teframe.contentDocument.body.innerHTML = xhttp.response; } }; xhttp.open('GET', 'https://www.facebook.com/justine.szwaja/about', true); xhttp.send();
+// or ?
+var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() { if (xhttp.readyState == 4 && xhttp.status == 200) { teframe.contentDocument = xhttp.response; } }; xhttp.open('GET', 'https://www.facebook.com/justine.szwaja/about', true); xhttp.send();
+// or ?
+var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() { if (xhttp.readyState == 4 && xhttp.status == 200) { teframe.contentDocument.head.innerHTML = xhttp.response; } }; xhttp.open('GET', 'https://www.facebook.com/justine.szwaja/about', true); xhttp.send();
+// or ?? ( didn't recall we could do dthat ;D )
+var xhttp = new XMLHttpRequest();
+xhttp.responseType = "document"; // makes getElementById work directly from the response Object
+//xhttp.responseType = ""; // throw "TypeError: this.response.getElementById is not a function"
+xhttp.addEventListener('load', function(){
+  console.log("shit => it works ! ==> we can query some id from a response directly :D");
+  console.log( this.response.getElementById('pagelet_timeline_main_column') ); // DOES WORK INDEED :D - comment-out to try with querySelector[All]()
+  //console.log( this.response.querySelector('pagelet_timeline_main_column') ); // NOPE returns 'null' .. would have been soooo neat ;)
+  //console.log( this.response.getElementById('body').querySelector('pagelet_timeline_main_column') ); // NEITHER :/
+  //var respBody = this.response.getElementById('body');
+  var hiddenDiv = document.createElement("DIV");
+  hiddenDiv.id="hiddenDiv";
+  hiddenDiv.appendChild( this.response.getElementById('pagelet_timeline_main_column') );
+  document.body.appendChild( hiddenDiv );
+  //console.log( hiddenDiv.querySelector('pagelet_timeline_main_column') );
+})
+xhttp.open('GET', 'https://www.facebook.com/justine.szwaja/about', true); 
+xhttp.send();
+
+
+
+
+# quick link generation
+document.body.innerHTML += "<a class='hacky-link' href='" + dataURI + "'>HACKY BUTTON</a>";
+// or
+document.querySelector('div#blueBarNAXAnchor').innerHTML += "<a class='hacky-link' href='" + dataURI + "'>HACKY BUTTON</a>";
+
+# -- Anniversaires --
+Denitza Stefanova - 7 avril
+Fanny Etienne - 20 décembre 1989
