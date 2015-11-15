@@ -57,3 +57,6 @@ also, the following works in Chrome & FF from the console
 ```javascript
 copy('some stuff');
 ```
+
+Last but not least, the following still is quite relevant ;p
+[Musing with Google ;p](https://www.blackhat.com/presentations/bh-europe-05/BH_EU_05-Long.pdf)
